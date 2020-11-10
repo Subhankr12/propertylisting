@@ -7,5 +7,6 @@ router.post('/apply', propertyControllers.applyForProperty);
 router.get('/getapplied?:id', propertyControllers.getUserAppliedProperty);
 router.get('/getpropertystatus?:id', propertyControllers.getPropertyStatus);
 router.post('/setstatus', propertyControllers.setUserStatus);
+router.get('/filter', propertyControllers.getFilteredProperty);
 
 module.exports = router;

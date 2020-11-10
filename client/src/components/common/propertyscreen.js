@@ -65,12 +65,14 @@ export default function PropertyScreen(props){
                     .container {
                         overflow: visible;
                     }
+                    .container {
+                        width: 60%;
+                        margin: 0 auto;
+                    }
                     .housewrapper{
                         display: flex;
                         justify-content: space-between;
                         align-items: center;
-                        width: 60%;
-                        margin: 10px auto;
                     }
                     .houseimg{
                         width: 300px;

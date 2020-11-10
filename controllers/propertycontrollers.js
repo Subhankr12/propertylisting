@@ -109,3 +109,14 @@ module.exports.setUserStatus = async(req, res) => {
             .catch(err => console.log(err));
     })
 }
+
+module.exports.getFilteredProperty = async(req, res) => {
+    await Property.find({...req.query}, (err, property) => {
+        if(err){
+            console.log(err);
+            return;
+        }
+
+        return res.json(property);
+    })
+}

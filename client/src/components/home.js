@@ -6,8 +6,10 @@ import Loader from './common/loader';
 import { Link } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 import PropertyScreen from './common/propertyscreen';
+import filterSvg from '../assets/filter.svg'; 
+import Filter from './common/filter';
 
-let screen = ['loading', 'result', 'error'];
+let screen = ['loading', 'result', 'filter', 'error'];
 
 export default class Home extends React.Component {
     constructor(props){
@@ -18,8 +20,14 @@ export default class Home extends React.Component {
             loggedin: false,
             userType: "",
             applied: [],
+            location: "",
+            bhk: "",
+            price: "",
         }
         this.handleApplyClick = this.handleApplyClick.bind(this);
+        this.handleFilterInputChange = this.handleFilterInputChange.bind(this);
+        this.redirectToFilter = this.redirectToFilter.bind(this);
+        this.handleFilterApply = this.handleFilterApply.bind(this);
     }
     componentDidMount(){
         if(localStorage.jwtToken){
@@ -63,6 +71,32 @@ export default class Home extends React.Component {
             })
             .catch(err => console.log(err));
     }
+    handleFilterInputChange(e){
+        this.setState({
+            [e.target.name]: e.target.value
+        })
+    }
+    handleFilterApply(){
+        const { location, price, bhk } = this.state;
+        let query = "";
+        if(location !== "") query += `location=${location}&`;
+        if(price !== "") query += `price=${price}&`;
+        if(bhk !== "") query += `bhk=${bhk}`;
+        
+        axios.get(`/property/filter?${query}`)
+            .then(property => {
+                this.setState({
+                    screen: screen[1],
+                    houses: property.data,
+                })
+            })
+            .catch(err => console.log(err));
+    }
+    redirectToFilter(){
+        this.setState({
+            screen: screen[2],
+        })
+    }
 
     render(){
         return(
@@ -71,13 +105,18 @@ export default class Home extends React.Component {
                 {this.state.screen === screen[0] ?
                     <Loader />
                     :
+                    this.state.screen === screen[1] ?
                     <div className="propertywrapper">
                         <h2 className="heading">Rent Your Dream Home</h2> 
-                        {this.state.loggedin && this.state.userType === 'landlord' &&
-                            <div className="listbtnwrapper">
+                        <div className="filterwrapper">
+                            <a onClick={this.redirectToFilter} className="propertylistbtn">Filters
+                                <img src={filterSvg} alt="filter svg" className="filtersvg"/>
+                            </a>   
+                            {this.state.loggedin && this.state.userType === 'landlord' &&
                                 <Link to="/admin" className="propertylistbtn">List Property</Link>   
-                            </div>
-                        }
+                            }
+                        </div>
+                        
                         <PropertyScreen 
                             houses={this.state.houses} 
                             loggedin={this.state.loggedin}
@@ -85,17 +124,31 @@ export default class Home extends React.Component {
                             onApplyClick={this.handleApplyClick}
                             userType={this.state.userType}
                         />
-                    </div>   
+                    </div> 
+                    :
+                    <Filter 
+                        location={this.state.location}
+                        bhk={this.state.bhk}
+                        price={this.state.price}
+                        onInputChange={this.handleFilterInputChange}
+                        onFilterApply={this.handleFilterApply}
+                    />  
                 }
                 <style jsx="true">{`
-                    .listbtnwrapper{
+                    .heading{
+                        color: ${globalStyles.colors.darkblue};
+                        margin: 15px;
+                        margin-bottom: 5px;
+                        text-align: center;
+                    }
+                    .filterwrapper{
                         display: flex;
-                        justify-content: flex-end;
+                        justify-content: space-between;
                         align-items: center;
                     }
                     .propertylistbtn{
                         height: 35px;
-                        width: 35%;
+                        width: 130px;
                         background: ${globalStyles.colors.darkblue};
                         color: ${globalStyles.colors.white};
                         box-shadow: 2px 0px 20px 0px ${globalStyles.colors.boxshadow};
@@ -106,16 +159,21 @@ export default class Home extends React.Component {
                         align-items: center;
                         margin: 10px;
                     }
-                    .heading{
-                        color: ${globalStyles.colors.darkblue};
-                        margin: 15px;
-                        margin-bottom: 5px;
-                        text-align: center;
+                    .filtersvg{
+                        width: 20px;
+                        height: 25px;
+                        margin-left: 10px;
                     }
-
                     @media screen and (min-width: 960px){
                         .propertylistbtn{
                             width: 200px;
+                        }
+                        .propertywrapper{
+                            margin-top: 70px;
+                        }
+                        .filterwrapper{
+                            width: 60%;
+                            margin: 0 auto;
                         }
                     }
                 `}</style>
