@@ -6,6 +6,7 @@ const globalStyles = {
         white: '#fff',
         lightblue: '#2bcfdf',
         darkbackground: '#848d91',
+        green: '#5da859',
     },
     fontWeight: {
         regular: 300,

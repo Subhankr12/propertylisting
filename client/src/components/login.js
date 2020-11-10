@@ -23,6 +23,7 @@ export default class Login extends React.Component {
             confirmPassword: "",
             loggedin: false,
             appliedhouses: [],
+            tenants: []
         }
         this.onSelectUserType = this.onSelectUserType.bind(this);
         this.redirectToLogin = this.redirectToLogin.bind(this);
@@ -57,16 +58,18 @@ export default class Login extends React.Component {
                         .catch(err => console.log(err));
                 }
                 else {
-                    this.setState({
-                        loggedin: localStorage.jwtToken ? true : false,
-                        name: decode.name,
-                        userType: decode.usertype,
-                    }, () => setTimeout(() => {
+                    axios.get(`/property/getpropertystatus?userId=${decode.id}`)
+                        .then(res => {
+                            console.log(res);
                             this.setState({
-                                screen: localStorage.jwtToken ? screen[4] : screen[1],
+                                appliedhouses: res.data,
+                                loggedin: true,
+                                name: decode.name,
+                                userType: decode.usertype,
+                                screen: screen[4],
                             })
-                        }, 1000)
-                    )
+                        })
+                        .catch(err => console.log(err));
                 }
             }   
         }
@@ -124,15 +127,8 @@ export default class Login extends React.Component {
             })
             .then(res => {
                 console.log(res);
-                let decode = jwt_decode(res.data.token);
                 localStorage.setItem("jwtToken", res.data.token);
-
-                this.setState({
-                    screen: screen[4],
-                    loggedin: true,
-                    name: decode.name,
-                    userType: decode.usertype,
-                })
+                window.location.reload();
             })
             .catch(err => console.log(err));
     }
@@ -140,6 +136,15 @@ export default class Login extends React.Component {
     handleClickLogout(){
         localStorage.removeItem("jwtToken");
         window.location.href = './login';
+    }
+
+    handleStatusClick(propertyId, tenantId, status){
+        axios.post('/property/setstatus', {
+            userId: tenantId,
+            propertyId: propertyId,
+            status: status,
+        }).then(res => console.log(res))
+            .catch(err => console.log(err));
     }
     render(){
         return(
@@ -176,6 +181,7 @@ export default class Login extends React.Component {
                         userType={this.state.userType}
                         onClickLogout={this.handleClickLogout}
                         appliedhouses={this.state.appliedhouses}
+                        onStatusClick={this.handleStatusClick}
                      />
                 }
                 

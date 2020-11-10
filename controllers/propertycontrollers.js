@@ -83,3 +83,29 @@ module.exports.getUserAppliedProperty = async(req, res) => {
         })
     })
 } 
+
+module.exports.getPropertyStatus = async(req, res) => {
+    await Property.find({landlordId: req.query.userId}, (err, property) => {
+        if(err){
+            console.log(err);
+            return;
+        }
+
+        return res.json(property);
+    })
+}
+
+module.exports.setUserStatus = async(req, res) => {
+    await Property.findOne({_id: req.body.propertyId}, (err, property) => {
+        if(err){
+            console.log(err);
+            return;
+        }
+
+        property.tenants[property.tenants.findIndex(tenant => tenant.id == req.body.userId)].status = req.body.status;
+
+        property.save()
+            .then(data => res.json(data))
+            .catch(err => console.log(err));
+    })
+}
