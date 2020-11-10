@@ -43,7 +43,7 @@ export default class Login extends React.Component {
             }
             else{
                 if(decode.usertype === 'Tenant'){
-                    axios.get(`http://localhost:5000/property/getapplied?userId=${decode.id}`)
+                    axios.get(`/property/getapplied?userId=${decode.id}`)
                         .then(res => {
                             console.log(res);
                             this.setState({
@@ -102,7 +102,7 @@ export default class Login extends React.Component {
     }
 
     handleSubmitSignup(){
-        axios.post('http://localhost:5000/users/register', {
+        axios.post('/users/register', {
                 name: this.state.name,
                 email: this.state.email,
                 password: this.state.password,
@@ -118,7 +118,7 @@ export default class Login extends React.Component {
     }
 
     handleSubmitLogin(){
-        axios.post('http://localhost:5000/users/login', {
+        axios.post('/users/login', {
                 email: this.state.email,
                 password: this.state.password,
             })

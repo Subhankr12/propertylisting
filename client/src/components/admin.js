@@ -41,7 +41,7 @@ export default class Admin extends React.Component{
 
     handleSubmit(){
         let decode = jwt_decode(localStorage.jwtToken)
-        axios.post('http://localhost:5000/property/add', {
+        axios.post('/property/add', {
            location: this.state.location,
            bhk: this.state.bhk,
            price: this.state.price,
