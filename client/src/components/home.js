@@ -36,7 +36,7 @@ export default class Home extends React.Component {
             })
         }
 
-        axios.get('http://localhost:5000/property/')
+        axios.get('/property/')
             .then(property => {
                 this.setState({
                     screen: screen[1],
@@ -48,7 +48,7 @@ export default class Home extends React.Component {
     handleApplyClick(propertyId){
         let decode = jwt_decode(localStorage.jwtToken);
 
-        axios.post('http://localhost:5000/property/apply', {
+        axios.post('/property/apply', {
                 propertyId: propertyId,
                 userId: decode.id,
                 name: decode.name,
