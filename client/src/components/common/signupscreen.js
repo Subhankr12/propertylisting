@@ -76,6 +76,14 @@ export default function SignupScreen(props){
                     width: 100px;
                     height: 35px;
                 }
+
+                @media screen and (min-width: 960px){
+                    #main {
+                        width: 60%;
+                        margin: 0 auto;
+                        margin-top: 60px;
+                    }
+                }
             `}</style>
         </div>
     )

@@ -36,7 +36,7 @@ export default class Home extends React.Component {
             })
         }
 
-        axios.get('/property/')
+        axios.get('http://localhost:5000/property/')
             .then(property => {
                 this.setState({
                     screen: screen[1],
@@ -48,7 +48,7 @@ export default class Home extends React.Component {
     handleApplyClick(propertyId){
         let decode = jwt_decode(localStorage.jwtToken);
 
-        axios.post('/property/apply', {
+        axios.post('http://localhost:5000/property/apply', {
                 propertyId: propertyId,
                 userId: decode.id,
                 name: decode.name,
@@ -111,6 +111,12 @@ export default class Home extends React.Component {
                         margin: 15px;
                         margin-bottom: 5px;
                         text-align: center;
+                    }
+
+                    @media screen and (min-width: 960px){
+                        .propertylistbtn{
+                            width: 200px;
+                        }
                     }
                 `}</style>
             </div>

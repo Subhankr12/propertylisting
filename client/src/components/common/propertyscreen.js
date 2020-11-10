@@ -60,6 +60,29 @@ export default function PropertyScreen(props){
                     box-sizing: border-box;
                     margin: 10px;
                 }
+
+                @media screen and (min-width: 960px){
+                    .container {
+                        overflow: visible;
+                    }
+                    .housewrapper{
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        width: 60%;
+                        margin: 10px auto;
+                    }
+                    .houseimg{
+                        width: 300px;
+
+                    }
+                    .houseoptions{
+                        width: 50%;
+                    }
+                    .housedetails > h3, .housedetails > h4 , .housedetails > h5 {
+                        margin: 15px;
+                    }
+                }
             `}</style>
         </div>
     )

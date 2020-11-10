@@ -116,6 +116,27 @@ export default function UserScreen(props){
                 .reject {
                     background: ${globalStyles.colors.red};
                 }
+
+                ::-webkit-scrollbar {
+                    width: 5px;
+                }
+                ::-webkit-scrollbar-track {
+                    box-shadow: inset 0 0 5px ${globalStyles.colors.boxshadow};
+                    border-radius: 10px;
+                }
+                ::-webkit-scrollbar-thumb {
+                    background: ${globalStyles.colors.boxshadow};
+                    height: 10px;
+                    width: 10px;
+                    border-radius: 10px;
+                }
+                @media screen and (min-width: 960px){
+                    #main {
+                        width: 60%;
+                        margin: 0 auto;
+                        margin-top: 60px;
+                    }
+                }
             `}</style>
         </div>
     )

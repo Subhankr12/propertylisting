@@ -39,7 +39,8 @@ export default React.memo(function NavBar(props){
                 }
                 @media screen and (min-width: 960px){
                     .pageheader{
-                        position: static;
+                        top: 0;
+                        bottom: auto;
                         display: flex;
                         justify-content: space-between;
                         align-items: center;
