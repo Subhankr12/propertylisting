@@ -55,7 +55,7 @@ module.exports.login = (req, res) => {
         // Sign token
         jwt.sign(
           payload,
-          process.env.SECRET_OR_KEY,
+          process.env.SECRET_OR_KEY || 'fkjadfhkjahdfkj',
           {
             expiresIn: 31556926 // 1 year in seconds
           },
